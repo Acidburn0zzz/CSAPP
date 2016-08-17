@@ -411,6 +411,11 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
+  /*
+  If there is an overflow, return uf itself
+  If it's normalized, exp += 1
+  If it's denomalized, leftshit frac by 1, and add 1 to exp if there is a carry
+  */
   unsigned sign = uf & 0x80000000;
   unsigned exp = uf & 0x7f800000;
   unsigned frac = uf & 0x7fffff;
