@@ -108,9 +108,11 @@ int func4(int x) {
 }
 ```
 func4 computes Fibonacci and answer will be 9.  
-0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | ...
-- | - | - |- |- |- |- |- |- | - | -
-1 | 1 | 2 | 3 | 5 | 8 | 13 | 21 | 34| 55 | ...
+
+ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | ... 
+ --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---   
+ 1 | 1 | 2 | 3 | 5 | 8 | 13 | 21 | 34| 55 | ...  
+
 
 # phase_5
 ```c
@@ -130,16 +132,19 @@ void phase_5(char* s) {
         explode_bomb();
 }
 ```
-This function translates input string using a dict and requires result to be "giants". Use gdb to get the content of dict:  
+This function translates input string using a dict and requires result to be "giants". Use gdb to get the content of dict:   
+
 Address | Content
--|-
+--- | ---
 0x804b22c | u t f g
 0x804b228 | o b p n
 0x804b224 | e a w h
-0x804b220 | i s r v  
-So the offset should be:  
+0x804b220 | i s r v   
+
+So the offset should be:   
+
  lettet | g | i | a | n | t | s
- - | - | - | - | - | - | -
+ --- | --- | --- | --- | --- | --- | ---
  offset | 15 | 0 | 5 | 11 | 13 | 1
 Notice that offset is the lowest 4 bits of input char, so there are multiple answers,  such as:  
 ?05;=1
@@ -191,10 +196,12 @@ This function requires an input of six numbers which should be from 1 to 6 and n
 What it does is that given number n refers to nth node in a linked list locating at 0x804b26c and then this func will rearrange the linked list with the order given by input.  
 After that, it will check val field in every node to see make sure new list is sorted by descending order.  
 Use gdb to print the original linked list:  
+
 Address | 0x804b26c | 0x804b260 | 0x804b254 | 0x804b248 | 0x804b23c | 0x804b230
-- | - | - | - | - | - | - 
+--- | --- | --- | --- | --- | --- | --- 
 index | 1 -> | 2 -> | 3 -> | 4 -> | 5 -> | 6
 value | 253 | 725 | 301 | 997 | 212 | 432   
+
 To get a desending order, answer should be:  
 4 2 6 3 1 5
 
