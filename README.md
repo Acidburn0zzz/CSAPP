@@ -6,8 +6,12 @@ This repo includes my solutions to [CS:APP2e labs](http://www.csapp.cs.cmu.edu/p
   
 - [x] Bomb Lab
   - Version: April 9, 2013
-  - Evaluate: Six phases + Secret phase
-- [ ] Buffer Lab
+  - Finish: All six phases + Secret phase  
+  
+- [x] Buffer Lab 
+  - Version: Sep 10, 2014
+  - Finish: All five Levels  
+  
 - [ ] Architecture Lab
 - [ ] Cache Lab
 - [ ] Performance Lab
