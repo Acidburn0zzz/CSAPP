@@ -1,0 +1,49 @@
+                      | # Execution begins at address 0
+  0x000:              | 	.pos 0
+  0x000: 30f400010000 | init:	irmovl Stack, %esp # Set up stack pointer
+  0x006: 30f500010000 | 	irmovl Stack, %ebp # Set up base pointer
+  0x00c: 802c000000   | 	call Main	   # Execute main program
+  0x011: 00           | 	halt		   # Terminate program
+                      | 
+                      | # Sample linked list
+  0x014:              | .align 4
+  0x014:              | ele1:
+  0x014: 0a000000     | 	.long 0x00a
+  0x018: 1c000000     | 	.long ele2
+  0x01c:              | ele2:
+  0x01c: b0000000     | 	.long 0x0b0
+  0x020: 24000000     | 	.long ele3
+  0x024:              | ele3:
+  0x024: 000c0000     | 	.long 0xc00
+  0x028: 00000000     | 	.long 0
+                      | 
+  0x02c: a05f         | Main:	pushl %ebp
+  0x02e: 2045         | 	rrmovl %esp, %ebp
+  0x030: 30f014000000 | 	irmovl ele1, %eax
+  0x036: a00f         | 	pushl %eax
+  0x038: 8042000000   | 	call sum_list
+  0x03d: 2054         | 	rrmovl %ebp, %esp
+  0x03f: b05f         | 	popl %ebp
+  0x041: 90           | 	ret
+                      | 
+                      | 	# int sum_list(list_ptr ls)
+  0x042:              | sum_list:
+  0x042: a05f         | 	pushl %ebp
+  0x044: 2045         | 	rrmovl %esp, %ebp
+  0x046: 2054         | 	rrmovl %ebp, %esp
+  0x048: 501508000000 | 	mrmovl 8(%ebp), %ecx # ecx = ls
+  0x04e: 6300         | 	xorl %eax, %eax      # eax <- val = 0
+  0x050: 6211         | 	andl %ecx, %ecx	     # Set condition codes
+  0x052: 736c000000   | 	je End
+  0x057: 502100000000 | Loop:	mrmovl (%ecx), %edx  # get ls->val
+  0x05d: 6020         | 	addl %edx, %eax      # val += ls->val
+  0x05f: 501104000000 | 	mrmovl 4(%ecx), %ecx # ls = ls->next
+  0x065: 6211         | 	andl %ecx, %ecx
+  0x067: 7457000000   | 	jne Loop
+  0x06c: 2054         | End:	rrmovl %ebp, %esp
+  0x06e: b05f         | 	popl %ebp
+  0x070: 90           | 	ret
+                      | 
+                      | # The stack starts here and grows to lower addresses
+  0x100:              | 	.pos 0x100
+  0x100:              | Stack:
