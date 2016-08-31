@@ -170,3 +170,26 @@ End:	rrmovl %ebp, %esp
 	.pos 0x100
 Stack:
 ```
+
+# Part B
+In this part we are required to add two new instructions into SEQ simulator, iaddl and leave, here are descriptions for them:  
+
+Stage     | iaddl V, rB
+---       | ---
+Fetch     | icode : ifun <- M1[PC] </br>  rA : rB <- M1[PC + 1] </br> valC <- M4[PC + 2]</br> valP <- PC + 6
+Decode    | valB <- R[rB]
+Execute   | valE <- valC + valB
+Memory    |   
+WriteBack | R[rB] <- valE
+PC Update | PC <- valP  
+
+Stage     | leave
+---       | ---
+Fetch     | icode : ifun <- M1[PC] </br>  valP <- PC + 1
+Decode    | valA <- R[esp] </br> valB <- R[ebp]
+Execute   | valE <- 4 + valB
+Memory    |   
+WriteBack | R[ebp] <- valM </br> R[esp] <- valE
+PC Update | PC <- valP 
+  
+The last thing is to translate these two descriptions into HCL format and add it into [seq-full.hcl](https://github.com/CtheSky/CSAPP-lab/blob/master/architecture_lab/sim/seq/seq-full.hcl)  (too long to put here)  
