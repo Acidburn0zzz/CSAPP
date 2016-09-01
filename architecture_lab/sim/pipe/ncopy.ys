@@ -23,22 +23,52 @@ ncopy:	pushl %ebp		# Save old frame pointer
 # You can modify this portion
 	# Loop header
 	xorl %eax,%eax		# count = 0;
-	andl %edx,%edx		# len <= 0?
-	jle Done		# if so, goto Done:
+	iaddl $-5, %edx		# len -= 5
+	jl Remain		# if len < 0, goto Remain :
 
-Loop:	mrmovl (%ebx), %esi	# read val from src...
+Loop:	mrmovl (%ebx), %esi
+	mrmovl 4(%ebx), %edi	# read next val, avoid load/use hazard 
+	rmmovl %esi, (%ecx)
+	andl %esi, %esi
+	jle LNpos
+	iaddl $1, %eax
+LNpos:	mrmovl 8(%ebx), %esi	# read next val, avoid load/use hazard 
+	rmmovl %edi, 4(%ecx)
+	andl %edi, %edi
+	jle LNpos2
+	iaddl $1, %eax
+LNpos2:	mrmovl 12(%ebx), %edi	# read next val, avoid load/use hazard 
+	rmmovl %esi, 8(%ecx)
+	andl %esi, %esi
+	jle LNpos3
+	iaddl $1, %eax
+LNpos3:	mrmovl 16(%ebx), %esi	# read next val, avoid load/use hazard 
+	rmmovl %edi, 12(%ecx)
+	andl %edi, %edi
+	jle LNpos4
+	iaddl $1, %eax
+LNpos4:	rmmovl %esi, 16(%ecx)	# read next val, avoid load/use hazard 
+	andl %esi, %esi
+	jle Update
+	iaddl $1, %eax
+Update:	iaddl $20, %ebx
+	iaddl $20, %ecx
+	iaddl $-5, %edx
+	jg Loop
+	
+	
+Remain:	iaddl $5, %edx		# num of elements left is less than 5
+	je Done
+Rloop:	mrmovl (%ebx), %esi	# read val from src...
 	rmmovl %esi, (%ecx)	# ...and store it to dst
 	andl %esi, %esi		# val <= 0?
-	jle Npos		# if so, goto Npos:
-	irmovl $1, %edi
-	addl %edi, %eax		# count++
-Npos:	irmovl $1, %edi
-	subl %edi, %edx		# len--
-	irmovl $4, %edi
-	addl %edi, %ebx		# src++
-	addl %edi, %ecx		# dst++
+	jle RNpos		# if so, goto Npos:
+	iaddl $1, %eax		# count++
+RNpos:	iaddl $-1, %edx		# len--
+	iaddl $4, %ebx		# src++
+	iaddl $4, %ecx		# dst++
 	andl %edx,%edx		# len > 0?
-	jg Loop			# if so, goto Loop:
+	jg Rloop		# if so, goto Loop:
 ##################################################################
 # Do not modify the following section of code
 # Function epilogue.
