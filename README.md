@@ -12,7 +12,11 @@ This repo includes my solutions to [CS:APP2e labs](http://www.csapp.cs.cmu.edu/p
   - Version: Sep 10, 2014
   - Finish: All five Levels  
   
-- [ ] Architecture Lab
+- [x] Architecture Lab
+  - Version: July 29, 2013
+  - Finish: All three parts
+  - Evaluat: Corr 68/68, Perf 60/60 (Part C)
+
 - [ ] Cache Lab
 - [ ] Performance Lab
 - [ ] Shell Lab
