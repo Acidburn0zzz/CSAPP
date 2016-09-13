@@ -20,7 +20,7 @@ This repo includes my solutions to [CS:APP2e labs](http://www.csapp.cs.cmu.edu/p
 - [ ] Cache Lab
 - [x] Performance Lab
   - Version: Sep 2, 2014
-  - Evaluat: Part A 17.2/50, Part B 42/50 (struggle with magic)
+  - Evaluat: PartA 17.2/50, PartB 42/50 (struggle with magic)
 - [ ] Shell Lab
 - [ ] Malloc Lab
 - [ ] Proxy Lab
