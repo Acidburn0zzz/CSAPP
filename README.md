@@ -15,12 +15,19 @@ This repo includes my solutions to [CS:APP2e labs](http://www.csapp.cs.cmu.edu/p
 - [x] Architecture Lab
   - Version: July 29, 2013
   - Finish: All three parts
-  - Evaluat: Corr 68/68, Perf 60/60 (Part C)
+  - Evaluate: Corr 68/68, Perf 60/60 (Part C)
 
-- [ ] Cache Lab
+- [x] Cache Lab
+  - Version: Sep 2, 2014
+  - Evaluate: 
+    - Csim correctness 27/27
+    - 32x32 Trans perf  8/8  (289 misses)
+    - 64x64 Trans perf  8/8  (1277 misses)
+    - 61x67 Trans perf  10/10 (2000 misses)
+
 - [x] Performance Lab
   - Version: Sep 2, 2014
-  - Evaluat: PartA 17.2/50, PartB 42/50 (struggle with magic)
+  - Evaluate: PartA 17.2/50, PartB 42/50 (struggle with magic)
 - [ ] Shell Lab
 - [ ] Malloc Lab
 - [ ] Proxy Lab
