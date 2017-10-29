@@ -85,6 +85,9 @@ void app_error(char *msg);
 typedef void handler_t(int);
 handler_t *Signal(int signum, handler_t *handler);
 
+/* Here are more helper routines */
+pid_t Fork(void);
+
 /*
  * main - The shell's main routine 
  */
@@ -165,6 +168,30 @@ int main(int argc, char **argv)
 */
 void eval(char *cmdline) 
 {
+    char *argv[MAXARGS];
+    int bg;
+    int pid;
+    
+    bg = parseline(cmdline, argv);
+    if (argv[0] == NULL)
+	return;
+    
+    if (!builtin_cmd(argv)) {
+	if ((pid = Fork()) == 0) {
+	    if (execve(argv[0], argv, environ) < 0) {
+		printf("%s: Command not found.\n", argv[0]);
+		exit(0);
+	    }
+	}
+
+	if (!bg) {
+	    waitfg(pid);
+	}
+	else {
+	    addjob(jobs, pid, BG, cmdline);
+	    printf("[%d] (%d) %s", pid2jid(pid), pid, cmdline);
+	}
+    }
     return;
 }
 
@@ -231,6 +258,19 @@ int parseline(const char *cmdline, char **argv)
  */
 int builtin_cmd(char **argv) 
 {
+    if (strcmp(argv[0], "quit") == 0)
+	exit(0);
+
+    if (strcmp(argv[0], "jobs") == 0) {
+	listjobs(jobs);
+	return 1;
+    }
+
+    if (strcmp(argv[0], "bg") == 0 || strcmp(argv[0], "fg") == 0) {
+	do_bgfg(argv);
+	return 1;
+    }
+
     return 0;     /* not a builtin command */
 }
 
@@ -247,6 +287,7 @@ void do_bgfg(char **argv)
  */
 void waitfg(pid_t pid)
 {
+    waitpid(pid, NULL, WUNTRACED);
     return;
 }
 
@@ -273,6 +314,11 @@ void sigchld_handler(int sig)
  */
 void sigint_handler(int sig) 
 {
+    pid_t pid;
+
+    if ((pid = fgpid(jobs)) > 0) {
+	
+    }
     return;
 }
 
@@ -421,7 +467,7 @@ void listjobs(struct job_t *jobs)
     
     for (i = 0; i < MAXJOBS; i++) {
 	if (jobs[i].pid != 0) {
-	    printf("[%d] (%d) ", jobs[i].jid, jobs[i].pid);
+	    printf("[%d] (%d) ", jobs[i].jid, jobs[i].pid);        
 	    switch (jobs[i].state) {
 		case BG: 
 		    printf("Running ");
@@ -505,5 +551,14 @@ void sigquit_handler(int sig)
     exit(1);
 }
 
-
-
+/*
+ * Fork - error-handling wrappered fork
+ */
+pid_t Fork(void)
+{
+    pid_t pid;
+    
+    if ((pid = fork()) < 0)
+	unix_error("Fork error");
+    return pid;
+}
