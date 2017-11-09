@@ -36,7 +36,9 @@ This repo includes my solutions to [CS:APP2e labs](http://www.csapp.cs.cmu.edu/p
   - [Solution and Explanation](https://github.com/CtheSky/CSAPP-lab/tree/master/performance_lab)
 
 #### Shell Lab
-  - TODO
+  - Version: July 28, 2003
+  - Evaluate: Traces 16/16
+  - [Solution and Explanation](https://github.com/CtheSky/CSAPP/tree/master/shell_lab)
   
 #### Malloc Lab
   - TODO
